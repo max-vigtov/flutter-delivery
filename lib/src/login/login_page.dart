@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_delivery/src/login/login_controller.dart';
 import 'package:flutter_delivery/src/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 
@@ -10,6 +12,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController _con = LoginController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _con.init(context);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,27 +29,29 @@ class _LoginPageState extends State<LoginPage> {
         width: double.infinity,
         child: Stack(
           children: [
+            SingleChildScrollView(
+              child: Column(      
+               children: [              
+                _lottieAnimation(),
+                _textFieldEmail(),
+                _textFieldPassword(),
+                _buttonLogin(),
+                _textDontHaveAccount()                                      
+              ],
+             ),
+            ),
+            
             Positioned(
-              top: -80,
-              left: -90,
+              top: -75,
+              left: -85,
               child: _circleLogin()
               ),
 
             Positioned(
-              top: 60,
-              left: 25,
+              top: 70,
+              left: 35,
               child: _textLogin()
-              ),
-
-            Column(      
-             children: [              
-              _lottieAnimation(),
-              _textFieldEmail(),
-              _textFieldPassword(),
-              _buttonLogin(),
-              _textDontHaveAccount()          
-            ],
-           ),
+              ),           
           ]
         ),
       ),
@@ -116,18 +130,24 @@ Widget _buttonLogin (){
             ),
   );
  }  
+
 Widget _textDontHaveAccount (){
   return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text('No tienes cuenta?'),
         const SizedBox(width: 7,),
-        Text('Registrate', 
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: MyColors.primaryColor
-              ),
-           )
+        GestureDetector(
+          onTap:() {
+          _con.goToRegisterPage();
+          },
+          child: Text('Registrate', 
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: MyColors.primaryColor
+                ),
+             ),
+        )
        ],
     );
  }   
@@ -144,11 +164,12 @@ Widget _textDontHaveAccount (){
  }
 
  Widget _textLogin (){
-  return Text('LOGIN',
+  return const Text('LOGIN',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 22
+              fontSize: 22, 
+              fontFamily: 'NimbusSans' 
             ),
      );
  }
