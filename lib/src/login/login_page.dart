@@ -12,11 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  LoginController _con = LoginController();
+  final LoginController _con = LoginController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _con.init(context);
@@ -25,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SizedBox(
         width: double.infinity,
         child: Stack(
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               ],
              ),
             ),
-            
+
             Positioned(
               top: -75,
               left: -85,
@@ -58,20 +58,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-Widget _imageBanner(){
-  return Container(
-    margin: EdgeInsets.only(
-      top: 100, 
-      bottom: MediaQuery.of(context).size.height * 0.22
-      ),
-    child: Image.asset('assets/img/delivery.png',
-      height: 200,
-      width: 200 ,
-      ),
-  );
-  }
+// Widget _imageBanner(){
+//   return Container(
+//     margin: EdgeInsets.only(
+//       top: 100, 
+//       bottom: MediaQuery.of(context).size.height * 0.22
+//       ),
+//     child: Image.asset('assets/img/delivery.png',
+//       height: 200,
+//       width: 200 ,
+//       ),
+//   );
+//   }
 
- Widget _textFieldEmail (){
+Widget _textFieldEmail (){
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
     decoration: BoxDecoration(
@@ -79,14 +79,16 @@ Widget _imageBanner(){
       borderRadius: BorderRadius.circular(30)
     ),
     child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Correo electronico',
-                  hintStyle: TextStyle(
-                    color: MyColors.primaryColorDark
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(15),
-                  prefixIcon: Icon(Icons.email, color: MyColors.primaryColor,)
+      controller: _con.emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+       hintText: 'Correo electronico',
+       hintStyle: TextStyle(
+          color: MyColors.primaryColorDark
+          ),
+        border: InputBorder.none,
+       contentPadding: const EdgeInsets.all(15),
+       prefixIcon: Icon(Icons.email, color: MyColors.primaryColor,)
             ),
        ),
   );
@@ -100,14 +102,16 @@ Widget _textFieldPassword (){
       borderRadius: BorderRadius.circular(30)
     ),
     child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Contraseña',
-                  hintStyle: TextStyle(
-                    color: MyColors.primaryColorDark
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(15),
-                  prefixIcon: Icon(Icons.lock, color: MyColors.primaryColor,)
+      controller: _con.passwordController,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: 'Contraseña',
+        hintStyle: TextStyle(
+         color: MyColors.primaryColorDark
+           ),
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.all(15),
+        prefixIcon: Icon(Icons.lock, color: MyColors.primaryColor,)
             ),
        ),
   );
@@ -118,7 +122,7 @@ Widget _buttonLogin (){
     width: double.infinity,
     margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
     child: ElevatedButton(
-               onPressed: (){},
+              onPressed: _con.login,
               style: ElevatedButton.styleFrom(
                   backgroundColor: MyColors.primaryColor,
                   shape: RoundedRectangleBorder(
